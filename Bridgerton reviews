@@ -1,0 +1,66 @@
+import requests
+
+
+url= 'https://www.imdb.com/title/tt8740790/reviews?ref_=tt_urv'
+
+html = requests.get(url).content
+
+html
+
+from bs4 import BeautifulSoup
+
+html_tree = BeautifulSoup(html, 'html.parser')
+
+html_tree
+
+html_tree.find_all(class_='pagecontent')
+
+html_tree.find_all(class_='text show-more__control')
+
+review_html = html_tree.find_all(class_='text show-more__control')
+
+review_html[0]
+
+review_html[0].text
+
+reviews = [item.text for item in review_html ]
+
+reviews
+
+title_html =html_tree.find_all(class_ = 'title')
+title_html
+
+title = [ item.text for item in title_html]
+
+title
+
+name_html =html_tree.find_all(class_ = 'display-name-link')
+name_html
+
+name = [ item.text for item in name_html]
+name
+
+date_html =html_tree.find_all(class_ = 'review-date')
+date_html
+
+date = [ item.text for item in date_html]
+date
+
+data = {
+    'Review Title': title,
+    'Review Name' : name,
+    'Review Date' : date,
+    'Reviews': reviews,
+}
+
+data
+
+import pandas as pd
+
+df =pd.DataFrame(data)
+
+df
+
+
+df.to_csv('data.csv')
+
